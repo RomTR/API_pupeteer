@@ -20,13 +20,29 @@ const scrapeLogic = async (res) => {
     await page.goto('https://www.windguru.cz/station/2748');
   await page.waitForTimeout(1000);
   await page.waitForSelector('.wgs_wind_avg_value')
+  await page.waitForSelector('.wgs_wind_max_value')
+  await page.waitForSelector('.wgs_wind_dir_numvalue')
+  await page.waitForSelector('.wgs_wind_dir_value')
   //await page.waitForFunction('document.getElementsByClassName("wgs_wind_avg_value")[0].childNodes[0].length > 0')
-  const data = await page.evaluate(() => {
+  const wind_avg = await page.evaluate(() => {
     return document.querySelector('.wgs_wind_avg_value').innerText;
   });
+  const wind_gust = await page.evaluate(() => {
+    return document.querySelector('.wgs_wind_max_value').innerText;
+  });
+  const wind_dir_num = await page.evaluate(() => {
+    return document.querySelector('.wgs_wind_dir_numvalue').innerText;
+  });
+  const wind_dir_val = await page.evaluate(() => {
+    return document.querySelector('.wgs_wind_dir_value').innerText;
+  });
+
   //console.log(data);
   await browser.close();
-  res.json({wind: data})
+  res.json({windAvg : wind_avg,
+            windGust : wind_gust,
+            windDirNum : wind_dir_num,
+            windDirValue : wind_dir_val})
   } catch (e) {
     console.error(e);
     res.send(`Something went wrong while running Puppeteer: ${e}`);
