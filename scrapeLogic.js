@@ -37,7 +37,7 @@ const scrapeLogic = async (res) => {
     return document.querySelector('.wgs_wind_dir_value').innerText;
   });
 
-  //console.log(data);
+  //console.log(wind_avg);
   await browser.close();
   res.json({windAvg : wind_avg,
             windGust : wind_gust,
